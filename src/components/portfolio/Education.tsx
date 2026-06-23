@@ -6,7 +6,7 @@ export function Education() {
   return (
     <section id="education" className="relative border-t border-white/5 bg-background py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHeading label="// Education" title="Foundations laid in design and computing." />
+        <SectionHeading label="// Education" title="Academic Qualification" />
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} className="relative overflow-hidden rounded-2xl border border-white/5 bg-surface-2/80 p-8">
           <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary to-secondary" />
           <motion.svg initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.4, ease: "easeOut" }} viewBox="0 0 400 30" className="pointer-events-none absolute right-6 top-6 hidden w-72 text-primary/40 md:block">
