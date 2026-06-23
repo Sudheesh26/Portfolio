@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Github, Linkedin, FileDown, ChevronDown } from "lucide-react";
 import { WebThreadCanvas } from "./WebThreadCanvas";
 import { CONTACT } from "../../lib/portfolio-data";
+import ResumePdf from "/Resume/Sudheesh_H_RESUME.pdf";
 
 const NAME = "SUDHEESH H";
 
@@ -45,7 +46,7 @@ export function Hero() {
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.5 }} className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-display text-xl tracking-wider text-foreground/70 md:text-2xl">
           <span>AI Agent Developer</span><span className="text-primary">•</span>
           <span>Cloud Engineer</span><span className="text-primary">•</span>
-          <span>ML Systems Builder</span>
+          <span>Software Engineer</span>
         </motion.div>
 
         <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9, duration: 0.5 }} className="mt-8 max-w-xl text-base leading-relaxed text-text-muted md:text-lg">
@@ -56,7 +57,7 @@ export function Hero() {
           <a href="#projects" className="group inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground shadow-glow-red transition hover:bg-red-glow">
             View Projects <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
           </a>
-          <a href="/Resume/Sudheesh_H_RESUME.pdf" download="Sudheesh_H_RESUME.pdf" className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3 text-sm font-medium text-foreground transition hover:border-primary/60 hover:text-primary">
+          <a href={ResumePdf} download="Sudheesh_H_RESUME.pdf" className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3 text-sm font-medium text-foreground transition hover:border-primary/60 hover:text-primary">
             <FileDown className="h-4 w-4" /> Download Resume
           </a>
           <a href={CONTACT.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="rounded-md border border-white/10 p-3 text-foreground/80 transition hover:scale-105 hover:border-primary/60 hover:text-primary">
