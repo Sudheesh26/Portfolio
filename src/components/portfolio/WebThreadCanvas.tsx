@@ -30,81 +30,82 @@ export function WebThreadCanvas() {
         vy: (Math.random() - 0.5) * 0.25 * dpr,
       }));
     };
+
     resize();
     window.addEventListener("resize", resize);
 
-    const onMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current.x = (e.clientX - rect.left) * dpr;
-      mouseRef.current.y = (e.clientY - rect.top) * dpr;
+    const onMouse = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX * dpr, y: e.clientY * dpr };
     };
-    const onLeave = () => {
-      mouseRef.current.x = -9999;
-      mouseRef.current.y = -9999;
-    };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseleave", onLeave);
-
-    const threshold = 130 * dpr;
-    const mouseR = 180 * dpr;
+    window.addEventListener("mousemove", onMouse, { passive: true });
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const p of particles) {
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+      const w = canvas!.width;
+      const h = canvas!.height;
+      const maxDist = Math.min(w, h) * 0.2;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
       }
-      for (let i = 0; i < particles.length; i++) {
-        const a = particles[i];
-        for (let j = i + 1; j < particles.length; j++) {
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const d = Math.hypot(dx, dy);
-          if (d < threshold) {
-            const mx = (a.x + b.x) / 2;
-            const my = (a.y + b.y) / 2;
-            const dm = Math.hypot(mx - mouseRef.current.x, my - mouseRef.current.y);
-            const near = dm < mouseR;
-            const alpha = (1 - d / threshold) * (near ? 0.55 : 0.12);
-            ctx.strokeStyle = near
-              ? `rgba(220, 38, 38, ${alpha})`
-              : `rgba(255, 255, 255, ${alpha})`;
-            ctx.lineWidth = near ? 1 * dpr : 0.6 * dpr;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
+
+      if (!prefersReduced) {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < maxDist) {
+              ctx!.beginPath();
+              ctx!.moveTo(particles[i].x, particles[i].y);
+              ctx!.lineTo(particles[j].x, particles[j].y);
+              ctx!.strokeStyle = `oklch(1 0 0 / ${(1 - dist / maxDist) * 0.12})`;
+              ctx!.lineWidth = 0.5 * dpr;
+              ctx!.stroke();
+            }
+          }
+          const dx = particles[i].x - mouseRef.current.x;
+          const dy = particles[i].y - mouseRef.current.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDist * 1.2) {
+            ctx!.beginPath();
+            ctx!.moveTo(particles[i].x, particles[i].y);
+            ctx!.lineTo(mouseRef.current.x, mouseRef.current.y);
+            ctx!.strokeStyle = `oklch(0.58 0.22 25 / ${(1 - dist / (maxDist * 1.2)) * 0.3})`;
+            ctx!.lineWidth = 0.7 * dpr;
+            ctx!.stroke();
           }
         }
       }
+
+      ctx!.fillStyle = "oklch(0.97 0.01 250 / 0.5)";
       for (const p of particles) {
-        const dm = Math.hypot(p.x - mouseRef.current.x, p.y - mouseRef.current.y);
-        const near = dm < mouseR;
-        ctx.fillStyle = near ? "rgba(239, 68, 68, 0.9)" : "rgba(255, 255, 255, 0.45)";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, (near ? 1.6 : 1) * dpr, 0, Math.PI * 2);
-        ctx.fill();
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, 1.2 * dpr, 0, Math.PI * 2);
+        ctx!.fill();
       }
-      if (!prefersReduced) raf = requestAnimationFrame(draw);
+
+      raf = requestAnimationFrame(draw);
     };
-    draw();
+    raf = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("mousemove", onMouse);
     };
   }, []);
 
   return (
     <canvas
       ref={ref}
+      className="h-full w-full"
+      style={{ filter: "contrast(1.2)" }}
       aria-hidden
-      className="pointer-events-none absolute inset-0 h-full w-full"
     />
   );
 }

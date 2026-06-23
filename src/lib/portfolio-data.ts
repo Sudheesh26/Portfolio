@@ -1,6 +1,5 @@
 export type Experience = {
   company: string;
-  client?: string;
   role: string;
   label: string;
   period: string;
@@ -39,28 +38,23 @@ export const PROJECTS: Project[] = [
   {
     title: "Smart Attendance System",
     tagline: "Face-recognition attendance engine with 95%+ ML accuracy.",
-    problem:
-      "Educational institutions needed automated, real-time attendance without manual entry or human error.",
-    outcome:
-      "95%+ accuracy via an ensemble of LBPH, SVM, KNN and Random Forest. Real-time tracking with an admin dashboard for report generation.",
+    problem: "Educational institutions needed automated, real-time attendance without manual entry or human error.",
+    outcome: "95%+ accuracy via an ensemble of LBPH, SVM, KNN and Random Forest. Real-time tracking with an admin dashboard for report generation.",
     stack: ["Flask", "OpenCV", "MySQL", "LBPH", "SVM", "KNN", "Random Forest", "scikit-learn"],
     featured: true,
     label: "Featured Project",
     href: "https://github.com/Sudheesh26/Face-Recognition-attendance",
-    description:
-      "A real-time face recognition attendance system with multi-model ensemble (LBPH, SVM, KNN, Random Forest) for accurate recognition. Features live video capture, automated attendance marking with 30%+ confidence threshold, student registration portal (captures 100 training images per student), admin dashboard with statistics and filtering, and duplicate-prevention (one mark per day per student). Built with Flask, OpenCV, scikit-learn, and MySQL. Optimized with PCA dimensionality reduction and weighted voting (LBPH 40% / ensemble 60%).",
+    description: "A real-time face recognition attendance system with multi-model ensemble (LBPH, SVM, KNN, Random Forest) for accurate recognition. Features live video capture, automated attendance marking with 30%+ confidence threshold, student registration portal (captures 100 training images per student), admin dashboard with statistics and filtering, and duplicate-prevention (one mark per day per student). Built with Flask, OpenCV, scikit-learn, and MySQL. Optimized with PCA dimensionality reduction and weighted voting (LBPH 40% / ensemble 60%).",
   },
   {
     title: "TasteBuds / FoodApp-For-HCL",
     tagline: "ML-powered cafeteria ordering platform with demand prediction.",
     problem: "Cafeterias overproduced food and lacked next-day demand visibility.",
-    outcome:
-      "Hackathon LeaderBoard Award winner at HackBees 1.0. Reduced waste via Random-Forest demand prediction.",
+    outcome: "Hackathon LeaderBoard Award winner at HackBees 1.0. Reduced waste via Random-Forest demand prediction.",
     stack: ["Node.js", "MongoDB", "React", "Express", "Random Forest", "Render"],
     label: "Hackathon Winner — HackBees 1.0",
     href: "https://github.com/Sudheesh26/FoodApp-For-HCL-",
-    description:
-      "Built for HCL Technologies Madurai (still under development). A dual-site food ordering system with a Client-End for employees to place orders and a Vendor-End for managing orders. Hosted on Render.com. Uses Random Forest for demand prediction to reduce food waste.",
+    description: "Built for HCL Technologies Madurai (still under development). A dual-site food ordering system with a Client-End for employees to place orders and a Vendor-End for managing orders. Hosted on Render.com. Uses Random Forest for demand prediction to reduce food waste.",
   },
 ];
 
@@ -70,22 +64,10 @@ export type SkillCategory = {
 };
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
-  {
-    title: "AI / ML Systems",
-    children: ["LangGraph", "LangChain", "TensorFlow", "PyTorch", "RAG", "AI Agents", "DSA"],
-  },
-  {
-    title: "Cloud & Infrastructure",
-    children: ["Azure", "GCP", "SCVMM", "Load Balancing", "Resource Groups", "Failover Clusters"],
-  },
-  {
-    title: "Databases & Dev Tools",
-    children: ["PostgreSQL", "MySQL", "MongoDB", "Git", "GitHub", "Jupyter", "VS Code"],
-  },
-  {
-    title: "Frontend & Platforms",
-    children: ["React", "Node.js", "JavaScript", "Python", "TypeScript", "REST APIs"],
-  },
+  { title: "AI / ML Systems", children: ["LangGraph", "LangChain", "TensorFlow", "PyTorch", "RAG", "AI Agents", "DSA"] },
+  { title: "Cloud & Infrastructure", children: ["Azure", "GCP", "SCVMM", "Load Balancing", "Resource Groups", "Failover Clusters"] },
+  { title: "Databases & Dev Tools", children: ["PostgreSQL", "MySQL", "MongoDB", "Git", "GitHub", "Jupyter", "VS Code"] },
+  { title: "Frontend & Platforms", children: ["React", "Node.js", "JavaScript", "Python", "TypeScript", "REST APIs"] },
 ];
 
 export type Certification = {

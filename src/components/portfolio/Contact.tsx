@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Mail, Phone, Github, Linkedin, ArrowRight, CheckCircle2 } from "lucide-react";
-import { CONTACT } from "@/lib/portfolio-data";
+import { CONTACT } from "../../lib/portfolio-data";
 import { SectionHeading } from "./SectionHeading";
-import { sendContactMessage } from "@/lib/contact";
 import { toast } from "sonner";
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
 
 const schema = z.object({
   name: z.string().trim().min(2, "Name is required").max(80),
@@ -19,23 +19,23 @@ type FormValues = z.infer<typeof schema>;
 
 export function Contact() {
   const [sent, setSent] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FormValues) => {
+    if (!WEB3FORMS_KEY) {
+      toast.error("Form service not configured. Email me directly at " + CONTACT.email);
+      return;
+    }
     try {
-      const result = await sendContactMessage({ data });
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_key: WEB3FORMS_KEY, name: data.name, email: data.email, message: data.message }),
+      });
+      if (!res.ok) throw new Error("Send failed");
       setSent(true);
       reset();
-      toast.success(
-        result.logged
-          ? "Message logged. Configure RESEND_API_KEY to send emails."
-          : "Message sent! I'll get back to you shortly.",
-      );
+      toast.success("Message sent! I'll get back to you shortly.");
     } catch {
       toast.error("Failed to send. Please email me directly at " + CONTACT.email);
     }
@@ -57,13 +57,7 @@ export function Contact() {
             <ContactRow icon={Github} label="github.com/Sudheesh26" href={CONTACT.github} />
             <ContactRow icon={Linkedin} label="linkedin.com/in/sudheesh-h" href={CONTACT.linkedin} />
           </div>
-          <motion.form
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 rounded-2xl border border-white/5 bg-surface-2/80 p-6 backdrop-blur"
-          >
+          <motion.form initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-2xl border border-white/5 bg-surface-2/80 p-6 backdrop-blur">
             <Field label="Name" error={errors.name?.message}>
               <input {...register("name")} className="w-full rounded-md border border-white/10 bg-surface-3 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary/60" placeholder="Your name" />
             </Field>
@@ -73,12 +67,7 @@ export function Contact() {
             <Field label="Message" error={errors.message?.message}>
               <textarea {...register("message")} rows={5} className="w-full resize-none rounded-md border border-white/10 bg-surface-3 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary/60" placeholder="What are we building?" />
             </Field>
-            <motion.button
-              layout
-              type="submit"
-              disabled={isSubmitting || sent}
-              className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition ${sent ? "bg-emerald-500/20 text-emerald-300" : "bg-primary text-primary-foreground hover:bg-red-glow"}`}
-            >
+            <motion.button layout type="submit" disabled={isSubmitting || sent} className={`inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition ${sent ? "bg-emerald-500/20 text-emerald-300" : "bg-primary text-primary-foreground hover:bg-red-glow"}`}>
               {sent ? (<><CheckCircle2 className="h-4 w-4" />Message Sent</>) : (<>{isSubmitting ? "Sending…" : "Send Message"}<ArrowRight className="h-4 w-4" /></>)}
             </motion.button>
           </motion.form>
@@ -100,15 +89,8 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 
 function ContactRow({ icon: Icon, label, href }: { icon: ComponentType<{ className?: string }>; label: string; href: string }) {
   return (
-    <a
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel="noreferrer"
-      className="group flex items-center gap-4 rounded-xl border border-white/5 bg-surface-2/60 px-5 py-4 transition hover:border-primary/40"
-    >
-      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-surface-3 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
-        <Icon className="h-4 w-4" />
-      </div>
+    <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="group flex items-center gap-4 rounded-xl border border-white/5 bg-surface-2/60 px-5 py-4 transition hover:border-primary/40">
+      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-surface-3 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground"><Icon className="h-4 w-4" /></div>
       <span className="text-sm text-foreground/85 group-hover:text-foreground">{label}</span>
     </a>
   );

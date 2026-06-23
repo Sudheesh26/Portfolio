@@ -1,6 +1,4 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
+@import "tailwindcss";
 @import "@fontsource/bebas-neue/400.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
@@ -10,20 +8,6 @@
 @import "@fontsource/jetbrains-mono/500.css";
 
 @custom-variant dark (&:is(.dark *));
-
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -82,7 +66,6 @@
 
 :root {
   --radius: 0.75rem;
-  /* Spider-themed dark palette (default) */
   --background: oklch(0.13 0.02 270);
   --foreground: oklch(0.97 0.01 250);
   --surface: oklch(0.15 0.02 270);
@@ -92,10 +75,10 @@
   --card-foreground: oklch(0.97 0.01 250);
   --popover: oklch(0.18 0.025 270);
   --popover-foreground: oklch(0.97 0.01 250);
-  --primary: oklch(0.58 0.22 25);          /* crimson */
+  --primary: oklch(0.58 0.22 25);
   --primary-foreground: oklch(0.98 0.01 250);
   --red-glow: oklch(0.66 0.24 25);
-  --secondary: oklch(0.45 0.2 260);        /* electric blue */
+  --secondary: oklch(0.45 0.2 260);
   --secondary-foreground: oklch(0.98 0.01 250);
   --blue-bright: oklch(0.62 0.2 255);
   --muted: oklch(0.22 0.025 270);
@@ -124,61 +107,20 @@
   --sidebar-accent-foreground: oklch(0.97 0.01 250);
   --sidebar-border: oklch(1 0 0 / 7%);
   --sidebar-ring: oklch(0.58 0.22 25 / 60%);
-  /* gradients & shadows */
   --gradient-spider: linear-gradient(135deg, oklch(0.58 0.22 25) 0%, oklch(0.45 0.2 260) 100%);
   --shadow-glow-red: 0 0 40px -10px oklch(0.58 0.22 25 / 0.6);
   --shadow-glow-blue: 0 0 40px -10px oklch(0.45 0.2 260 / 0.5);
 }
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-}
-
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
+  * { border-color: var(--color-border); }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
   ::selection {
     background: oklch(0.58 0.22 25 / 0.35);
     color: oklch(0.98 0.01 250);
@@ -201,12 +143,8 @@
   background-clip: text;
   color: transparent;
 }
-@utility glow-red {
-  box-shadow: var(--shadow-glow-red);
-}
-@utility glow-blue {
-  box-shadow: var(--shadow-glow-blue);
-}
+@utility glow-red { box-shadow: var(--shadow-glow-red); }
+@utility glow-blue { box-shadow: var(--shadow-glow-blue); }
 @utility web-grid-bg {
   background-image:
     linear-gradient(oklch(1 0 0 / 0.03) 1px, transparent 1px),
@@ -218,14 +156,10 @@
   0%, 100% { opacity: 0.6; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.15); }
 }
-@keyframes draw-line {
-  to { stroke-dashoffset: 0; }
-}
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
-
 @utility animate-float {
   animation: float 4s ease-in-out infinite;
 }
