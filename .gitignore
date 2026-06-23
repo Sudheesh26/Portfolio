@@ -36,3 +36,4 @@ dist
 .env
 .next
 build
+.lovable
